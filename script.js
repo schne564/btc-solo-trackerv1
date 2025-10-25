@@ -63,12 +63,15 @@ function formatTimeEstimate(timeEstimateString) {
   const years = Math.floor(totalDays / 365);
   const days = Math.floor(totalDays % 365);
   
+  // Format years with commas for readability
+  const formattedYears = years.toLocaleString();
+  
   if (years === 0) {
     return `${days} day${days !== 1 ? 's' : ''}`;
   } else if (days === 0) {
-    return `${years} year${years !== 1 ? 's' : ''}`;
+    return `${formattedYears} year${years !== 1 ? 's' : ''}`;
   } else {
-    return `${years} year${years !== 1 ? 's' : ''}, ${days} day${days !== 1 ? 's' : ''}`;
+    return `${formattedYears} year${years !== 1 ? 's' : ''}, ${days} day${days !== 1 ? 's' : ''}`;
   }
 }
 
@@ -77,9 +80,9 @@ function formatHashrate(hashrateString) {
     return "Unavailable";
   }
   
-  // Just return the hashrate as-is from the API
-  // The API already formats it correctly
-  return hashrateString;
+  // Replace H/s with TH/s (case insensitive)
+  // This keeps the value but changes the unit label
+  return hashrateString.replace(/H\/s/gi, 'TH/s');
 }
 
 function showToast(message, type = 'success') {
