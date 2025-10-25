@@ -77,40 +77,9 @@ function formatHashrate(hashrateString) {
     return "Unavailable";
   }
   
-  // Extract number and unit from string like "123.45 H/s" or "1,234.56 H/s"
-  const match = hashrateString.match(/([\d,\.]+)\s*([a-z]+\/s)/i);
-  if (!match) {
-    return hashrateString; // Return original if we can't parse it
-  }
-  
-  // Remove commas and parse the number
-  const value = parseFloat(match[1].replace(/,/g, ''));
-  const unit = match[2].toUpperCase();
-  
-  if (isNaN(value)) {
-    return hashrateString;
-  }
-  
-  // Convert to TH/s based on current unit
-  let thValue;
-  
-  if (unit === 'H/S') {
-    thValue = value / 1e12; // H/s to TH/s
-  } else if (unit === 'KH/S') {
-    thValue = value / 1e9; // KH/s to TH/s
-  } else if (unit === 'MH/S') {
-    thValue = value / 1e6; // MH/s to TH/s
-  } else if (unit === 'GH/S') {
-    thValue = value / 1e3; // GH/s to TH/s
-  } else if (unit === 'TH/S') {
-    thValue = value; // Already in TH/s
-  } else if (unit === 'PH/S') {
-    thValue = value * 1e3; // PH/s to TH/s
-  } else {
-    return hashrateString; // Unknown unit, return original
-  }
-  
-  return `${thValue.toFixed(2)} TH/s`;
+  // Just return the hashrate as-is from the API
+  // The API already formats it correctly
+  return hashrateString;
 }
 
 function showToast(message, type = 'success') {
