@@ -72,6 +72,47 @@ function formatTimeEstimate(timeEstimateString) {
   }
 }
 
+function formatHashrate(hashrateString) {
+  if (!hashrateString || hashrateString === "Unavailable") {
+    return "Unavailable";
+  }
+  
+  // Extract number and unit from string like "123.45 H/s" or "1,234.56 H/s"
+  const match = hashrateString.match(/([\d,\.]+)\s*([a-z]+\/s)/i);
+  if (!match) {
+    return hashrateString; // Return original if we can't parse it
+  }
+  
+  // Remove commas and parse the number
+  const value = parseFloat(match[1].replace(/,/g, ''));
+  const unit = match[2].toUpperCase();
+  
+  if (isNaN(value)) {
+    return hashrateString;
+  }
+  
+  // Convert to TH/s based on current unit
+  let thValue;
+  
+  if (unit === 'H/S') {
+    thValue = value / 1e12; // H/s to TH/s
+  } else if (unit === 'KH/S') {
+    thValue = value / 1e9; // KH/s to TH/s
+  } else if (unit === 'MH/S') {
+    thValue = value / 1e6; // MH/s to TH/s
+  } else if (unit === 'GH/S') {
+    thValue = value / 1e3; // GH/s to TH/s
+  } else if (unit === 'TH/S') {
+    thValue = value; // Already in TH/s
+  } else if (unit === 'PH/S') {
+    thValue = value * 1e3; // PH/s to TH/s
+  } else {
+    return hashrateString; // Unknown unit, return original
+  }
+  
+  return `${thValue.toFixed(2)} TH/s`;
+}
+
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
@@ -279,8 +320,8 @@ function updateStats(address) {
       document.getElementById("workers").textContent = formatWithSuffix(data.workers);
       document.getElementById("shares").textContent = data.shares || "Unavailable";
       document.getElementById("lastBlock").textContent = data.lastBlock || "Unavailable";
-      document.getElementById("hashrate1hr").textContent = data.hashrate1hr || "Unavailable";
-      document.getElementById("hashrate5m").textContent = data.hashrate5m || "Unavailable";
+      document.getElementById("hashrate1hr").textContent = formatHashrate(data.hashrate1hr);
+      document.getElementById("hashrate5m").textContent = formatHashrate(data.hashrate5m);
       document.getElementById("chancePerBlock").textContent = data.chancePerBlock || "Unavailable";
       document.getElementById("chancePerDay").textContent = data.chancePerDay || "Unavailable";
       document.getElementById("timeEstimate").textContent = formatTimeEstimate(data.timeEstimate);
