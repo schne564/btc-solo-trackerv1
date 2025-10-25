@@ -325,8 +325,9 @@ function updateStats(address) {
       state.previousBestShare = newBestShare;
       
       // Handle difficulty with notification
-      const newDifficulty = parseFloat(data.difficulty);
-      document.getElementById("difficulty").textContent = newDifficulty.toLocaleString();
+      document.getElementById("difficulty").textContent = data.difficulty || "Unavailable";
+      
+      const newDifficulty = parseFloat(data.difficultyRaw || 0);
       
       if (!isNaN(newDifficulty) && newDifficulty !== state.previousDifficulty && state.previousDifficulty > 0) {
         notifyDifficultyChange(newDifficulty);
