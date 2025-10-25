@@ -41,6 +41,37 @@ function formatTimestamp(date = new Date()) {
   });
 }
 
+function formatTimeEstimate(timeEstimateString) {
+  if (!timeEstimateString || timeEstimateString === "Unavailable") {
+    return "Unavailable";
+  }
+  
+  // Extract number of days from string like "X days" or "X.XX days"
+  const match = timeEstimateString.match(/([\d,\.]+)\s*days?/i);
+  if (!match) {
+    return timeEstimateString; // Return original if we can't parse it
+  }
+  
+  // Remove commas and parse the number
+  const totalDays = parseFloat(match[1].replace(/,/g, ''));
+  
+  if (isNaN(totalDays)) {
+    return timeEstimateString;
+  }
+  
+  // Convert to years and days
+  const years = Math.floor(totalDays / 365);
+  const days = Math.floor(totalDays % 365);
+  
+  if (years === 0) {
+    return `${days} day${days !== 1 ? 's' : ''}`;
+  } else if (days === 0) {
+    return `${years} year${years !== 1 ? 's' : ''}`;
+  } else {
+    return `${years} year${years !== 1 ? 's' : ''}, ${days} day${days !== 1 ? 's' : ''}`;
+  }
+}
+
 function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
@@ -252,7 +283,7 @@ function updateStats(address) {
       document.getElementById("hashrate5m").textContent = data.hashrate5m || "Unavailable";
       document.getElementById("chancePerBlock").textContent = data.chancePerBlock || "Unavailable";
       document.getElementById("chancePerDay").textContent = data.chancePerDay || "Unavailable";
-      document.getElementById("timeEstimate").textContent = data.timeEstimate || "Unavailable";
+      document.getElementById("timeEstimate").textContent = formatTimeEstimate(data.timeEstimate);
       
       // Handle best share with notification
       const newBestShare = parseFloat(data.bestshare);
