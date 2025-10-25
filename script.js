@@ -295,7 +295,7 @@ function updateStats(address) {
       // Update all fields
       document.getElementById("address").textContent = data.address || "Unavailable";
       document.getElementById("workers").textContent = formatWithSuffix(data.workers);
-      document.getElementById("shares").textContent = data.shares || "Unavailable";
+      document.getElementById("shares").textContent = formatWithSuffix(data.shares);
       document.getElementById("lastBlock").textContent = data.lastBlock || "Unavailable";
       document.getElementById("hashrate1hr").textContent = formatHashrate(data.hashrate1hr);
       document.getElementById("hashrate5m").textContent = formatHashrate(data.hashrate5m);
