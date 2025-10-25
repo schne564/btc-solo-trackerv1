@@ -307,6 +307,7 @@ function updateStats(address) {
       console.log("After formatHashrate 5m:", formatHashrate(data.hashrate5m));
       
       document.getElementById("chancePerBlock").textContent = data.chancePerBlock || "Unavailable";
+      document.getElementById("chancePerHour").textContent = data.chancePerHour || "Unavailable";
       document.getElementById("chancePerDay").textContent = data.chancePerDay || "Unavailable";
       document.getElementById("timeEstimate").textContent = formatTimeEstimate(data.timeEstimate);
       
