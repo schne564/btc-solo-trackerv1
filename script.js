@@ -63,6 +63,12 @@ function formatTimeEstimate(timeEstimateString) {
   const years = Math.floor(totalDays / 365);
   const days = Math.floor(totalDays % 365);
   
+  // If years is unrealistically high (over 10 million), there's likely a calculation error
+  // Cap it and show a message
+  if (years > 10000000) {
+    return "Extremely unlikely (calculation may need review)";
+  }
+  
   // Format years with commas for readability
   const formattedYears = years.toLocaleString();
   
@@ -80,9 +86,8 @@ function formatHashrate(hashrateString) {
     return "Unavailable";
   }
   
-  // Replace H/s with TH/s (case insensitive)
-  // This keeps the value but changes the unit label
-  return hashrateString.replace(/H\/s/gi, 'TH/s');
+  // Worker now sends values in TH/s format, just return as-is
+  return hashrateString;
 }
 
 function showToast(message, type = 'success') {
@@ -294,6 +299,13 @@ function updateStats(address) {
       document.getElementById("lastBlock").textContent = data.lastBlock || "Unavailable";
       document.getElementById("hashrate1hr").textContent = formatHashrate(data.hashrate1hr);
       document.getElementById("hashrate5m").textContent = formatHashrate(data.hashrate5m);
+      
+      // Debug logging - remove after fixing
+      console.log("Raw hashrate1hr from API:", data.hashrate1hr);
+      console.log("Raw hashrate5m from API:", data.hashrate5m);
+      console.log("After formatHashrate 1hr:", formatHashrate(data.hashrate1hr));
+      console.log("After formatHashrate 5m:", formatHashrate(data.hashrate5m));
+      
       document.getElementById("chancePerBlock").textContent = data.chancePerBlock || "Unavailable";
       document.getElementById("chancePerDay").textContent = data.chancePerDay || "Unavailable";
       document.getElementById("timeEstimate").textContent = formatTimeEstimate(data.timeEstimate);
