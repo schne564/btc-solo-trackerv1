@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BTC Solo Mining Tracker</title>
+  <meta name="description" content="Track your Bitcoin solo mining statistics in real-time with CKPool data" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>⛏️ BTC Solo Mining Tracker</h1>
+    
+    <div class="input-group">
+      <input 
+        type="text" 
+        id="btcAddressInput" 
+        placeholder="Enter BTC address" 
+        aria-label="Bitcoin address"
+      />
+      <button onclick="handleAddressSubmit()" aria-label="Check mining statistics">
+        Check Stats
+      </button>
+    </div>
+
+    <div class="controls">
+      <button id="refreshBtn" onclick="manualRefresh()" class="control-btn" aria-label="Refresh now">
+        🔄 Refresh
+      </button>
+      <button id="pauseBtn" onclick="toggleAutoRefresh()" class="control-btn" aria-label="Pause auto-refresh">
+        ⏸️ Pause
+      </button>
+      <button id="exportBtn" onclick="exportData()" class="control-btn" aria-label="Export data to CSV">
+        📊 Export
+      </button>
+      <button id="notifyBtn" onclick="requestNotifications()" class="control-btn" aria-label="Enable notifications">
+        🔔 Notify
+      </button>
+    </div>
+
+    <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+      <div class="spinner"></div>
+      <span>Loading stats...</span>
+    </div>
+
+    <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+    <div class="stats">
+      <div><span>Wallet:</span> <span id="address">Unavailable</span></div>
+      <div><span>Workers:</span> <span id="workers">Unavailable</span></div>
+      <div><span>Best Share:</span> <span id="bestshare">Unavailable</span></div>
+      <div><span>Shares:</span> <span id="shares">Unavailable</span></div>
+      <div><span>Difficulty:</span> <span id="difficulty">Unavailable</span></div>
+      <div><span>Last Block:</span> <span id="lastBlock">Unavailable</span></div>
+      <div><span>Hashrate 1hr:</span> <span id="hashrate1hr">Unavailable</span></div>
+      <div><span>Hashrate 5m:</span> <span id="hashrate5m">Unavailable</span></div>
+      <div><span>Chance Per Block:</span> <span id="chancePerBlock">Unavailable</span></div>
+      <div><span>Chance Per Day:</span> <span id="chancePerDay">Unavailable</span></div> 
+      <div><span>Time Estimate:</span> <span id="timeEstimate">Unavailable</span></div>
+    </div>
+
+    <div class="history-section">
+      <h3>📈 Best Share History</h3>
+      <div id="historyList" class="history-list"></div>
+    </div>
+    
+    <div class="updated" id="lastUpdated">Last updated: Never</div>
+    <div class="status-indicator">
+      <span id="autoRefreshStatus">Auto-refresh: ON (5s)</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
