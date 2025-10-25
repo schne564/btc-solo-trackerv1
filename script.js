@@ -314,6 +314,10 @@ function updateStats(address) {
       const newBestShare = parseFloat(data.bestshare);
       document.getElementById("bestshare").textContent = formatWithSuffix(newBestShare);
       
+      // Display best ever share
+      const bestEver = parseFloat(data.bestever);
+      document.getElementById("bestever").textContent = formatWithSuffix(bestEver);
+      
       if (!isNaN(newBestShare) && newBestShare > state.previousBestShare && state.previousBestShare > 0) {
         notifyNewBestShare(newBestShare);
       }
